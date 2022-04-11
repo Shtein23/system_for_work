@@ -18,6 +18,7 @@ from django.urls import path
 from system_db_invoice import views
 
 urlpatterns = [
+    path('', views.index),
     path('admin/', admin.site.urls),
-    path('', views.index)
+
 ]

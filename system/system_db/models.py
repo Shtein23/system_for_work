@@ -3,11 +3,11 @@ from django.db import models
 # Create your models here.
 
 
-# class User(models.Model):
-#     name = models.CharField()
-#     surname = models.CharField()
-#
-#
+class User(models.Model):
+    name = models.CharField(max_length=30)
+    surname = models.CharField(max_length=30)
+
+
 # class Product(models.Model):
 #     name = models.CharField()
 #

@@ -6,7 +6,23 @@
 </head>
 <body>
     <h1>{% block header %}{% endblock header %}</h1>
-    <div>{% block content%}{% endblock content %}</div>
-    <div>Подвал страницы</div>
+    <div>
+        {% block content%}
+
+
+        {% endblock content %}
+    </div>
+
+
+
+    <footer>Подвал страницы</footer>
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4="
+            crossorigin="anonymous"></script>
+    <script>
+        {% block script %}
+        {% endblock %}
+    </script>
 </body>
 </html>

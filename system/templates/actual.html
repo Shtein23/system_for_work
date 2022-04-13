@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% block title %}Актуальные заказы{% endblock title %}
+
+{% block header %}Таблица актуальных заказов{% endblock header %}
+{% block content %}
+    <button id="add">Добавить</button>
+    {% for order in orders %}
+        <p>{{ order.name }} - {{ order.status }} - {{ order.label}}</p>
+        {% empty %}
+        <p>В базе нет актуальных заказов</p>
+    {% endfor %}
+    <div id="add_layer" style="display: none">
+        {{ form }}
+    </div>
+{% endblock content %}
+
+
+{% block script %}
+    $('#add').on('click', function() {
+        $('#add_layer').css('display','block')
+    });
+
+{% endblock %}

@@ -10,6 +10,7 @@ class User(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=128)
+    object = models.Manager()
 
 
 class Status(models.Model):
@@ -17,9 +18,17 @@ class Status(models.Model):
     style_class = models.TextField()
 
 
+class Label(models.Model):
+    name = models.CharField(max_length=30)
+    style_class = models.TextField()
+
+
 class ActualOrder(models.Model):
     number = models.IntegerField()
     product_id = models.ForeignKey(Product, on_delete=models.DO_NOTHING)
+    count = models.IntegerField(default=0)
+    label = models.ForeignKey(Label, on_delete=models.DO_NOTHING, default=None)
     status = models.ForeignKey(Status, on_delete=models.DO_NOTHING)
+    object = models.Manager()
 
 

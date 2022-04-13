@@ -8,6 +8,7 @@ class UserForm(forms.Form):
 
 
 class AddOrder(forms.Form):
-    product = forms.Select()
+    product = forms.ChoiceField(label='Выберать изделие', choices=tuple((x.id, x.name) for x in Product.object.all()))
     count = forms.IntegerField(label='Количество', min_value=1, max_value=1000)
-    label = forms.Select()
+    # label = forms.ChoiceField(choices=tuple((x.id, x.name) for x in Label.object.all()))
+    date = forms.CharField(label='Необходимый срок')

@@ -4,13 +4,30 @@
 {% block header %}Таблица актуальных заказов{% endblock header %}
 {% block content %}
     <button id="add">Добавить</button>
+
+    <table>
+        <thead>
+            <th>
+                <td>
+
+                </td>
+            </th>
+        </thead>
+        <tbody>
+
+        </tbody>
+    </table>
     {% for order in orders %}
         <p>{{ order.name }} - {{ order.status }} - {{ order.label}}</p>
         {% empty %}
         <p>В базе нет актуальных заказов</p>
     {% endfor %}
-    <div id="add_layer" style="display: none">
-        {{ form }}
+    <div id="add_layer" style="display: block">
+        <form id="add_form" method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <input type="submit">
+        </form>
     </div>
 {% endblock content %}
 
@@ -19,5 +36,14 @@
     $('#add').on('click', function() {
         $('#add_layer').css('display','block')
     });
+    $.post('/find', {
+        m_id: elemId
+    }).done(function(response) {
+
+
+    }).fail(function() {
+        console.log('error');
+    });    
+
 
 {% endblock %}

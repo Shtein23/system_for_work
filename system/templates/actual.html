@@ -1,33 +1,87 @@
 {% extends "base.html" %}
 {% block title %}Актуальные заказы{% endblock title %}
 
-{% block header %}Таблица актуальных заказов{% endblock header %}
 {% block content %}
-    <button id="add">Добавить</button>
+    <div class="row">
+        <div class="col-12">
+            <div class="page-title-box">
+                <div class="page-title-right">
+                    <ol class="breadcrumb m-0">
+                        <li class="breadcrumb-item"><a href="#">Hyper</a></li>
+                        <li class="breadcrumb-item"><a href="#">eCommerce</a></li>
+                        <li class="breadcrumb-item active">Products</li>
+                    </ol>
+                </div>
+                <h4 class="page-title">Таблица актуальных заказов</h4>
+            </div>
+        </div>
+    </div>
+    <div class="card border-0 shadow-sm">
+        <div class="card-body" style="padding: 1.5rem!important;">
+            <div class="row mb-2">
+                <div class="col-7">
+                    <button id="add" class="btn btn-primary">Добавить</button>
+                </div>
+                <div class="col-5 text-sm-end">
+                    <button id="ex" class="btn btn-light">Экспорт</button>
+                </div>
+            </div>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>
+                        <input type="checkbox">
+                    </th>
+                    <th>
+                        Наименование
+                    </th>
+                    <th>
+                        Количество
+                    </th>
+                    <th>
+                        Желаемая дата готовности
+                    </th>
+                    <th>
+                        Состояние готовности
+                    </th>
+                    <th>
+                        Примечание
+                    </th>
+                    <th>
+                        Дейсвтия
+                    </th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for order in orders %}
+                <tr>
+                    <td><input type="checkbox"></td>
+                    <td>{{ order.product_id.name }}</td>
+                    <td>{{ order.count }} шт.</td>
+                    <td>{{ order.date }}</td>
+                    <td>{{ order.status.name }}</td>
+                    <td>{{ order.note}}</td>
+                    <td>
+                        <a href="#">Изменить</a> | <a href="#">Удалить</a>
+                    </td>
+                </tr>
 
-    <table>
-        <thead>
-            <th>
-                <td>
+                {% empty %}
+                <tr><td colspan="6">В базе нет актуальных заказов</td></tr>
+                {% endfor %}
+                </tbody>
+            </table>
 
-                </td>
-            </th>
-        </thead>
-        <tbody>
+            <div id="add_layer" style="display: block">
+                <form id="add_form" method="post">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    <input class="btn btn-success" type="submit" value="Добавить">
+                </form>
+            </div>
+        </div>
 
-        </tbody>
-    </table>
-    {% for order in orders %}
-        <p>{{ order.name }} - {{ order.status }} - {{ order.label}}</p>
-        {% empty %}
-        <p>В базе нет актуальных заказов</p>
-    {% endfor %}
-    <div id="add_layer" style="display: block">
-        <form id="add_form" method="post">
-            {% csrf_token %}
-            {{ form.as_p }}
-            <input type="submit">
-        </form>
+
     </div>
 {% endblock content %}
 
@@ -36,14 +90,14 @@
     $('#add').on('click', function() {
         $('#add_layer').css('display','block')
     });
-    $.post('/find', {
-        m_id: elemId
-    }).done(function(response) {
+<!--    $.post('/find', {-->
+
+<!--    }).done(function(response) {-->
 
 
-    }).fail(function() {
-        console.log('error');
-    });    
+<!--    }).fail(function() {-->
+<!--        console.log('error');-->
+<!--    });    -->
 
 
 {% endblock %}

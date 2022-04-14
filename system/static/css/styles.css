@@ -1,3 +1,41 @@
-body h1 {
-    color: red
+body {
+    font-family: 'Roboto';
+}
+.sidebar {
+    position: fixed!important;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    z-index: 100;
+}
+
+.footer {
+    border-top: 1px solid rgba(152,166,173,.2);
+    bottom: 0;
+    padding: 19px 24px 20px;
+    position: absolute;
+    right: 0;
+    color: #98a6ad;
+    left: 17%;
+    -webkit-transition: all .2s ease-in-out;
+    transition: all .2s ease-in-out;
+}
+
+.card-body {
+    padding: 1.5rem!important;
+}
+
+.page-title-box .page-title-right {
+    float: right;
+    margin-top: 20px;
+}
+
+.page-title-box .page-title {
+    font-size: 18px;
+    margin: 0;
+    line-height: 75px;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    color: var(--ct-page-title-color);
 }

@@ -1,6 +1,10 @@
 body {
     font-family: 'Roboto';
 }
+a {
+    text-decoration: none!important;
+    color: inherit;
+}
 .sidebar {
     position: fixed!important;
     top: 0;

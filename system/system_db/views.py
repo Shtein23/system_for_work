@@ -12,7 +12,9 @@ def index(request):
 
 def actual(request):
     if request.method == 'GET':
-        return render(request, 'actual.html', {'form': AddOrder(), 'orders': ActualOrder.objects.all()})
+        return render(request, 'actual.html', {'form': AddOrder(),
+                                               'orders': ActualOrder.objects.all(),
+                                               'status': Status.object.all()})
     elif request.method == 'POST':
         new_order = ActualOrder(product_id=Product.object.get(id=int(request.POST.get('product'))),
                                 count=request.POST.get('count'),
@@ -21,5 +23,10 @@ def actual(request):
                                 note=request.POST.get('note') + '\n')
         new_order.save()
         return JsonResponse({'res': 'ok'})
+    elif request.method == 'PUT':
+        pass
+    elif request.method == 'DELETE':
+        print(request.POST.get('id'))
+        ActualOrder.objects.filter(id=request.POST.get('id')).delete()
     else:
         return HttpResponseNotAllowed('<h2>Ошибка</h2>')

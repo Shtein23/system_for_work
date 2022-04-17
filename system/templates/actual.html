@@ -55,9 +55,9 @@
                     <td><input type="checkbox"></td>
                     <td>{{ order.product_id.name }}</td>
                     <td>{{ order.count }} шт.</td>
-                    <td>{{ order.date }}</td>
+                    <td>{{ order.date|date:"d.m.Y" }}</td>
                     <td>{{ order.status.name }}</td>
-                    <td>{{ order.note}}</td>
+                    <td>{{ order.note }}</td>
                     <td>
                         <i class="bi bi-pencil-square row_edit"></i>
                         <i class="bi bi-trash3 row_delete"></i>
@@ -65,17 +65,14 @@
                 </tr>
 
                 {% empty %}
-                <tr><td colspan="6">В базе нет актуальных заказов</td></tr>
+                <tr id="no_row"><td colspan="7">В базе нет актуальных заказов</td></tr>
                 {% endfor %}
                 </tbody>
             </table>
             <div id="add_layer" class="d-none">
-<!--                 method="post"-->
                 <form id="add_form" class="form col-4">
-                    {% csrf_token %}
                     {{ form }}
                     <button type="submit" class="btn btn-success mt-2">Добавить</button>
-<!--                    <input class="btn btn-success" type="submit" value="Добавить">-->
                 </form>
             </div>
         </div>
@@ -91,12 +88,62 @@
     });
     $('#add_form').on('submit', function(e) {
         e.preventDefault();
-        console.log($(this).serialize())
-        ajax_func('/actual', 'POST', $(this).serialize());
+        var data = 'action=add&' + $(this).serialize()
+        if ($('tr#no_row')) {
+            $('tr#no_row').remove()
+        }
+
+        $.ajax({
+            url: '/actual',
+            type: 'POST',
+            data: csrf + data,
+            success: function(res) {
+                if (res.scs) {
+                    $('#table_actual_order tbody').prepend('<tr id="'+ res.order.id+'">' +
+                                                            '<td><input type="checkbox"></td>'+
+                                                            '<td>'+res.order.product+'</td>'+
+                                                            '<td>'+res.order.count+' шт.</td>'+
+                                                            '<td>'+res.order.date+'</td>'+
+                                                            '<td>'+res.order.status+'</td>'+
+                                                            '<td>'+res.order.note+'</td>'+
+                                                            '<td><i class="bi bi-pencil-square row_edit"></i>'+
+                                                                '<i class="bi bi-trash3 row_delete"></i></td>'+
+                                                            '</tr>')
+                } else {
+                    console.log('NET');
+                }
+            },
+            error: function(request,msg,error) {
+                error_msg(request,msg,error)
+            }
+        })
+        $(this).trigger("reset");
+
     });
-    $('.row_delete').on('click', function(e) {
-        console.log($(this).parent().parent().attr('id'))
+
+
+    $('#table_actual_order').on('click', '.row_delete', function(e) {
         e.preventDefault();
-        ajax_func('/actual', 'DELETE', 'id='+$(this).parent().parent().attr('id'));
+        var id_row = $(this).parent().parent().attr('id')
+        var data = 'action=delete&id=' + id_row
+
+        $.ajax({
+            url: '/actual',
+            type: 'POST',
+            data: csrf + data,
+            success: function(res) {
+                if (res.scs) {
+                    $('tr#'+id_row).remove();
+                    if (!$('#table_actual_order tbody').find('tr').length) {
+                        $('#table_actual_order tbody').append('<tr id="no_row"><td colspan="7">В базе нет актуальных заказов</td></tr>')
+                    }
+                } else {
+                    console.log('error on server side');
+                }
+            },
+            error: function(request,msg,error) {
+                error_msg(request,msg,error)
+            }
+        })
     });
 {% endblock %}

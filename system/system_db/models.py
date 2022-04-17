@@ -37,4 +37,7 @@ class ActualOrder(models.Model):
     note = models.TextField(default='')
     objects = models.Manager()
 
+    def __repr__(self):
+        return f'<Актуальный заказ №{self.id}>'
+
 

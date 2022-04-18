@@ -44,10 +44,7 @@ def actual(request):
             order, created = ActualOrder.objects.update_or_create(id=request.POST.get('id'),
                                                                   defaults=values_for_update)
             res['scs'] = True
-            if created:
-                res['msg'] = f'Новый заказ №{order.id} добавлен'
-            else:
-                res['msg'] = f'Заказ №{order.id} обновлен'
+            res['msg'] = f'Новый заказ №{order.id} добавлен' if created else f'Заказ №{order.id} обновлен'
 
         # elif action == 'edit':
 

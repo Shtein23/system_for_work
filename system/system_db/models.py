@@ -11,7 +11,10 @@ class User(models.Model):
 
 class Product(models.Model):
     name = models.CharField(max_length=128)
-    object = models.Manager()
+    objects = models.Manager()
+
+    def __repr__(self):
+        return f'<Изделие {self.name}>'
 
 
 class Status(models.Model):

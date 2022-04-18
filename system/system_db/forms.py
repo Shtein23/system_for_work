@@ -9,7 +9,7 @@ class UserForm(forms.Form):
 
 class AddOrder(forms.Form):
     product = forms.ChoiceField(label='Выберать изделие',
-                                choices=tuple((x.id, x.name) for x in Product.object.all()),
+                                choices=tuple((x.id, x.name) for x in Product.objects.all()),
                                 widget=forms.Select(attrs={'class': 'form-select mb-2 js-chosen'}))
     count = forms.IntegerField(label='Количество',
                                min_value=1,
@@ -22,3 +22,4 @@ class AddOrder(forms.Form):
     note = forms.CharField(label='Примечание',
                            required=False,
                            widget=forms.TextInput(attrs={'class': 'form-control mb-2'}))
+    status = forms.IntegerField(widget=forms.HiddenInput, initial=1)

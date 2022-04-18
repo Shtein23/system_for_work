@@ -91,6 +91,7 @@ main .bi {
 
 th {
     border-bottom-width: 0px!important;
+    background: #eef2f7;
 }
 
 .table>:not(caption)>*>* {

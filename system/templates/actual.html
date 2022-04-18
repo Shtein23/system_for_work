@@ -95,7 +95,7 @@
     });
     $('#add_form').on('submit', function(e) {
         e.preventDefault();
-        var data = 'action=add&' + $(this).serialize()
+        var data = 'action=edit&' + $(this).serialize() + '&id=57'
         if ($('tr#no_row')) {
             $('tr#no_row').remove()
         }
@@ -106,16 +106,16 @@
             data: csrf + data,
             success: function(res) {
                 if (res.scs) {
-                    $('#table_actual_order tbody').prepend('<tr id="'+ res.order.id+'">' +
-                                                            '<td><input type="checkbox"></td>'+
-                                                            '<td>'+res.order.product+'</td>'+
-                                                            '<td>'+res.order.count+' шт.</td>'+
-                                                            '<td>'+res.order.date+'</td>'+
-                                                            '<td>'+res.order.status+'</td>'+
-                                                            '<td>'+res.order.note+'</td>'+
-                                                            '<td><i class="bi bi-pencil-square row_edit"></i>'+
-                                                                '<i class="bi bi-trash3 row_delete"></i></td>'+
-                                                            '</tr>')
+<!--                    $('#table_actual_order tbody').prepend('<tr id="'+ res.order.id+'">' +-->
+<!--                                                            '<td><input type="checkbox"></td>'+-->
+<!--                                                            '<td>'+res.order.product+'</td>'+-->
+<!--                                                            '<td>'+res.order.count+' шт.</td>'+-->
+<!--                                                            '<td>'+res.order.date+'</td>'+-->
+<!--                                                            '<td>'+res.order.status+'</td>'+-->
+<!--                                                            '<td>'+res.order.note+'</td>'+-->
+<!--                                                            '<td><i class="bi bi-pencil-square row_edit"></i>'+-->
+<!--                                                                '<i class="bi bi-trash3 row_delete"></i></td>'+-->
+<!--                                                            '</tr>')-->
                 } else {
                     console.log('NET');
                 }

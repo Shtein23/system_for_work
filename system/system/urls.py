@@ -19,7 +19,7 @@ from system_db import views
 
 urlpatterns = [
     path('', views.index),
-    path('actual', views.actual),
+    path('actual', views.actual, name='actual'),
     path('admin/', admin.site.urls),
 
 ]

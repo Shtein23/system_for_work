@@ -51,3 +51,48 @@ a {
     text-overflow: ellipsis;
     color: var(--ct-page-title-color);
 }
+
+#sidebarMenu .main {
+    border-left: 6px solid #dd4747;
+    border-radius: 0;
+    background: linear-gradient(90deg, rgba(255,0,0,0.1) 0%, rgba(255,255,255,0) 100%);
+}
+
+#sidebarMenu li:hover:not(.main) {
+    border-left: 3px solid #dd4747;
+    border-radius: 0;
+    background: linear-gradient(90deg, rgba(255,0,0,0.08) 0%, rgba(255,255,255,0) 100%);
+    transition: .2s;
+}
+
+#sidebarMenu .main a, #sidebarMenu li:hover a{
+    color: white!important;
+}
+
+main .bi {
+    font-size: 1em;
+}
+
+.bi {
+    font-size: 1.3em;
+}
+
+.table-light {
+    --ct-table-bg: #eef2f7;
+    --ct-table-striped-bg: #313a46;
+    --ct-table-striped-color: #fff;
+    --ct-table-active-bg: #a2a8b0;
+    --ct-table-active-color: #fff;
+    --ct-table-hover-bg: #e0e4ea;
+    --ct-table-hover-color: #313a46;
+    color: #313a46;
+    border-color: #dbe0e5;
+}
+
+th {
+    border-bottom-width: 0px!important;
+}
+
+.table>:not(caption)>*>* {
+    padding: 0.95rem 0.95rem;
+}

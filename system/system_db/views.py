@@ -16,7 +16,8 @@ def actual(request):
     if request.method == 'GET':
         return render(request, 'actual.html', {'form': AddOrder(),
                                                'orders': ActualOrder.objects.all(),
-                                               'status': Status.object.all()})
+                                               'status': Status.object.all(),
+                                               'main': 'actual'})
     elif request.method == 'POST':
         action = request.POST.get('action')
         res = {'scs': False, 'msg': 'Ошибка действия'}

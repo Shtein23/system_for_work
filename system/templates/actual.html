@@ -21,7 +21,7 @@
                 <div class="col-7 d-flex">
                     <div class="d-flex align-items-center">
                         <label class="me-2">Статус:</label>
-                        <select class="form-select js-chosen" style="width: auto">
+                        <select class="form-select" style="width: auto">
                             <option selected>Выбрать...</option>
                             {% for st in status %}
                                 <option value="{{ st.id }}">{{ st.name }}</option>
@@ -83,12 +83,6 @@
 
 
 {% block script %}
-
-    $('.js-chosen').chosen({
-		width: '100%',
-		no_results_text: 'Совпадений не найдено',
-		placeholder_text_single: 'Выбрать статус'
-	});
 
     $('#add').on('click', function() {
         $('#add_layer').toggleClass('d-none')

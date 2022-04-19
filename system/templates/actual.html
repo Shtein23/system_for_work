@@ -46,7 +46,7 @@
                     <th>Желаемая дата готовности</th>
                     <th>Состояние готовности</th>
                     <th>Примечание</th>
-                    <th>Действия</th>
+                    <th class="text-right">Действия</th>
                 </tr>
                 </thead>
                 <tbody class="table-hover">
@@ -59,8 +59,8 @@
                     <td>{{ order.status.name }}</td>
                     <td>{{ order.note }}</td>
                     <td>
-                        <i class="bi bi-pencil-square row_edit"></i>
-                        <i class="bi bi-trash3 row_delete"></i>
+                        <i class="fa-regular fa-pen-to-square"></i>
+                        <i class="fa-regular fa-trash-can"></i>
                     </td>
                 </tr>
 
@@ -87,9 +87,10 @@
     $('#add').on('click', function() {
         $('#add_layer').toggleClass('d-none')
     });
+
     $('#add_form').on('submit', function(e) {
         e.preventDefault();
-        var data = 'action=edit&' + $(this).serialize() + '&id=57'
+        var data = 'action=edit&' + $(this).serialize()
         if ($('tr#no_row')) {
             $('tr#no_row').remove()
         }
@@ -100,18 +101,18 @@
             data: csrf + data,
             success: function(res) {
                 if (res.scs) {
-<!--                    $('#table_actual_order tbody').prepend('<tr id="'+ res.order.id+'">' +-->
-<!--                                                            '<td><input type="checkbox"></td>'+-->
-<!--                                                            '<td>'+res.order.product+'</td>'+-->
-<!--                                                            '<td>'+res.order.count+' шт.</td>'+-->
-<!--                                                            '<td>'+res.order.date+'</td>'+-->
-<!--                                                            '<td>'+res.order.status+'</td>'+-->
-<!--                                                            '<td>'+res.order.note+'</td>'+-->
-<!--                                                            '<td><i class="bi bi-pencil-square row_edit"></i>'+-->
-<!--                                                                '<i class="bi bi-trash3 row_delete"></i></td>'+-->
-<!--                                                            '</tr>')-->
+                    $('#table_actual_order tbody').prepend('<tr id="'+ res.order.id+'">' +
+                                                            '<td><input type="checkbox"></td>'+
+                                                            '<td>'+res.order.product+'</td>'+
+                                                            '<td>'+res.order.count+' шт.</td>'+
+                                                            '<td>'+res.order.date+'</td>'+
+                                                            '<td>'+res.order.status+'</td>'+
+                                                            '<td>'+res.order.note+'</td>'+
+                                                            '<td><i class="fa-regular fa-pen-to-square"></i>'+
+                                                                '<i class="fa-regular fa-trash-can"></i></td>'+
+                                                            '</tr>')
                 } else {
-                    console.log('NET');
+                    console.log('error on server side');
                 }
             },
             error: function(request,msg,error) {
@@ -146,5 +147,10 @@
                 error_msg(request,msg,error)
             }
         })
+    });
+
+    $('#table_actual_order').on('click', '.fa-pen-to-square, .fa-floppy-disk', function(){
+        $(this).toggleClass('fa-pen-to-square')
+        $(this).toggleClass('fa-floppy-disk active')
     });
 {% endblock %}

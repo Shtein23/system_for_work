@@ -2,12 +2,8 @@ body {
     font-family: 'Roboto';
 }
 
-i.bi {
-    cursor: pointer;
-}
-i.bi:hover {
-    color: #0d6efd;
-}
+
+
 
 a {
     text-decoration: none!important;
@@ -69,12 +65,18 @@ a {
     color: white!important;
 }
 
-main .bi {
-    font-size: 1em;
+main i {
+    font-size: 1.3em;
+    margin-left: 0.2rem;
+}
+main i.active, i:hover {
+    color: #0d6efd;
 }
 
-.bi {
-    font-size: 1.3em;
+i  {
+    font-size: 1.2em;
+    cursor: pointer;
+
 }
 
 .table-light {

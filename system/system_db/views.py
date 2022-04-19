@@ -45,7 +45,12 @@ def actual(request):
                                                                   defaults=values_for_update)
             res['scs'] = True
             res['msg'] = f'Новый заказ №{order.id} добавлен' if created else f'Заказ №{order.id} обновлен'
-
+            res['order'] = {'id': order.id,
+                            'product': order.product_id.name,
+                            'count': order.count,
+                            'date': order.date.strftime('%d.%m.%Y'),
+                            'status': order.status.name,
+                            'note': order.note}
         # elif action == 'edit':
 
         elif action == 'delete':

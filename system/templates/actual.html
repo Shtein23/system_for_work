@@ -21,7 +21,7 @@
                 <div class="col-7 d-flex">
                     <div class="d-flex align-items-center">
                         <label class="me-2">Статус:</label>
-                        <select class="form-select" style="width: auto">
+                        <select id="sort_status" class="form-select" style="width: auto">
                             <option selected>Все</option>
                             {% for st in status %}
                                 <option>{{ st.name }}</option>
@@ -38,25 +38,25 @@
             <table id="table_actual_order" class="table">
                 <thead class="table-light">
                 <tr>
-                    <th><input type="checkbox" class="form-check-input"></th>
-                    <th>Наименование</th>
-                    <th>Количество</th>
-                    <th>Желаемая дата готовности</th>
-                    <th>Состояние готовности</th>
-                    <th>Примечание</th>
-                    <th class="text-right">Действия</th>
+                    <th style="width:1%"><input type="checkbox" class="form-check-input"></th>
+                    <th style="width:13%">Наименование</th>
+                    <th style="width:10%">Количество</th>
+                    <th style="width:17%">Желаемая дата готовности</th>
+                    <th style="width:15%">Состояние готовности</th>
+                    <th style="width:25%">Примечание</th>
+                    <th class="text-end" style="width:7%">Действия</th>
                 </tr>
                 </thead>
                 <tbody class="table-hover">
                 {% for order in orders %}
                 <tr id="{{ order.id }}">
                     <td><input type="checkbox" class="form-check-input"></td>
-                    <td>{{ order.product_id.name }}</td>
-                    <td>{{ order.count }} шт.</td>
-                    <td>{{ order.date|date:"d.m.Y" }}</td>
-                    <td>{{ order.status.name }}</td>
-                    <td>{{ order.note }}</td>
-                    <td>
+                    <td class="product">{{ order.product_id.name }}</td>
+                    <td class="count">{{ order.count }} шт.</td>
+                    <td class="date">{{ order.date|date:"d.m.Y" }}</td>
+                    <td class="status"><span class="badge {{ order.status.style_class }}">{{ order.status.icon|safe }} {{ order.status.name }}</span></td>
+                    <td class="note">{{ order.note }}</td>
+                    <td class="text-end">
                         <i class="fa-regular fa-pen-to-square" title="Редактировать"></i>
                         <i class="fa-regular fa-trash-can" title="Удалить запись"></i>
                     </td>
@@ -101,11 +101,11 @@
                 if (res.scs) {
                     $('#table_actual_order tbody').prepend('<tr id="'+ res.order.id+'">' +
                                                             '<td><input type="checkbox"></td>'+
-                                                            '<td>'+res.order.product+'</td>'+
-                                                            '<td>'+res.order.count+' шт.</td>'+
-                                                            '<td>'+res.order.date+'</td>'+
-                                                            '<td>'+res.order.status+'</td>'+
-                                                            '<td>'+res.order.note+'</td>'+
+                                                            '<td class="product">'+res.order.product+'</td>'+
+                                                            '<td class="count">'+res.order.count+'</td>'+
+                                                            '<td class="date">'+res.order.date+'</td>'+
+                                                            '<td class="status"><span class="badge '+res.order.status.class+'">'+res.order.status.icon+res.order.status.name+'</span></td>'+
+                                                            '<td class="note">'+res.order.note+'</td>'+
                                                             '<td><i class="fa-regular fa-pen-to-square" title="Редактировать"></i>'+
                                                                 '<i class="fa-regular fa-trash-can" title="Удалить запись"></i></td>'+
                                                             '</tr>')
@@ -197,16 +197,21 @@
             data += '&note=' + $('#table_actual_order tr#'+id_row+' td:eq(5) input').val()
         }
 
-
-        console.log(id_row, data)
-
         $.ajax({
             url: '/actual',
             type: 'POST',
             data: csrf + data,
             success: function(res) {
                 if (res.scs) {
-                    console.log('ok!');
+                    console.log('ok!', res.msg);
+                    var k = Object.keys(res.order)
+                    console.log(k,k.lenght);
+                    for (var i = 0; i < k.length; i++) {
+                        console.log($('tr#'+res.order.id+' td.'+k[i]));
+                        $('tr#'+res.order.id+' td.'+k[i]).html(res.order[k[i]])
+                        console.log(i);
+                       // ещё какие-то выражения
+                    }
 
                 } else {
                     console.log('error on server side');
@@ -218,7 +223,11 @@
         })
 
     });
-
+<!--<i class="fa-regular fa-hourglass"></i> - принят в обработку-->
+<!--<i class="fa-solid fa-thumbs-up"></i> - утвержден-->
+<!--<i class="fa-solid fa-hammer"></i> - в производстве-->
+<!--<i class="fa-solid fa-boxes-packing"></i> - готов к отгрузке-->
+<!--<i class="fa-solid fa-calendar-check"></i> - выполнен-->
     $('#table_actual_order').on('click', '.fa-ban, .fa-circle-check', function(){
 
         $('.fa-circle-check').toggleClass('fa-pen-to-square')
@@ -226,6 +235,7 @@
         var id_row = $(this).parent().parent().attr('id')
 
         $('table#table_actual_order tbody tr#'+id_row).find('select, input[type!="checkbox"], br, .input-group, .fa-ban').remove()
+        $('.fa-pen-to-square').attr('title', 'Редактировать')
     });
 
 

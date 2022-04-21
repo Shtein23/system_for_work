@@ -24,41 +24,35 @@ def actual(request):
 
         if action == 'add' or action == 'edit':
 
-            # old add orders func
-            # new_order = ActualOrder(product_id=Product.objects.get(id=int(request.POST.get('product'))),
-            #                         count=int(request.POST.get('count')),
-            #                         date=datetime.strptime(request.POST.get('date'), '%Y-%m-%d'),
-            #                         status=Status.object.get(id=request.POST.get('status')),
-            #                         note=request.POST.get('note'))
-            # new_order.save()
-            # res['msg'] = f'Новый заказ №{new_order.id} добавлен'
-            # res['scs'] = True
-            print(request.body)
-            try:
-                prod = Product.objects.get(id=int(request.POST.get('product')))
-            except:
-                prod = None
-            try:
-                stat = Status.object.get(id=request.POST.get('status'))
-            except:
-                stat = None
-            post_data = dict(product_id=prod,
-                             count=int(request.POST.get('count')) or None,
-                             date=datetime.strptime(request.POST.get('date'), '%Y-%m-%d') or None,
-                             status=stat,
-                             note=request.POST.get('note') or None)
+
+            post_data = dict(product_id=Product.objects.get(id=int(request.POST.get('product'))) if request.POST.get('product') else None,
+                             count=int(request.POST.get('count')) if request.POST.get('count') else None,
+                             date=datetime.strptime(request.POST.get('date'), '%Y-%m-%d') if request.POST.get('date')
+                             else None,
+                             status=Status.object.get(id=request.POST.get('status')) if request.POST.get('status') else None,
+                             note=request.POST.get('note') if request.POST.get('note') else None)
             values_for_update = {k: v for k, v in post_data.items() if v is not None}
 
-            order, created = ActualOrder.objects.update_or_create(id=request.POST.get('id'),
-                                                                  defaults=values_for_update)
-            res['scs'] = True
-            res['msg'] = f'Новый заказ №{order.id} добавлен' if created else f'Заказ №{order.id} обновлен'
-            res['order'] = {'id': order.id,
-                            'product': order.product_id.name,
-                            'count': order.count,
-                            'date': order.date.strftime('%d.%m.%Y'),
-                            'status': order.status.name,
-                            'note': order.note}
+            if len(values_for_update.keys()) > 0:
+
+                order, created = ActualOrder.objects.update_or_create(id=request.POST.get('id'),
+                                                                      defaults=values_for_update)
+                res['scs'] = True
+                res['msg'] = f'Новый заказ №{order.id} добавлен' if created else f'Заказ №{order.id} обновлен'
+                res['order'] = {'id': order.id,
+                                'product': order.product_id.name,
+                                'count': str(order.count)+' шт.',
+                                'date': order.date.strftime('%d.%m.%Y'),
+                                'status': {
+                                    'name': order.status.name,
+                                    'class': order.status.style_class,
+                                    'icon': order.status.icon
+                                },
+                                'note': order.note}
+
+            else:
+                res['scs'] = True
+                res['msg'] = 'Ничего не произошло'
         # elif action == 'edit':
 
         elif action == 'delete':

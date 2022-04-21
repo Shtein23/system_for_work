@@ -23,6 +23,7 @@ class Product(models.Model):
 class Status(models.Model):
     name = models.CharField(max_length=30)
     style_class = models.TextField()
+    icon = models.TextField(default='')
     object = models.Manager()
 
     def __repr__(self):

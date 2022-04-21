@@ -8,6 +8,9 @@ class User(models.Model):
     name = models.CharField(max_length=30)
     surname = models.CharField(max_length=30)
 
+    def __repr__(self):
+        return f'<Пользователь {self.name} {self.surname}>'
+
 
 class Product(models.Model):
     name = models.CharField(max_length=128)
@@ -21,6 +24,9 @@ class Status(models.Model):
     name = models.CharField(max_length=30)
     style_class = models.TextField()
     object = models.Manager()
+
+    def __repr__(self):
+        return f'<Статус {self.name}>'
 
 
 class Label(models.Model):

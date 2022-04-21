@@ -33,11 +33,19 @@ def actual(request):
             # new_order.save()
             # res['msg'] = f'Новый заказ №{new_order.id} добавлен'
             # res['scs'] = True
-
-            post_data = dict(product_id=Product.objects.get(id=int(request.POST.get('product'))) or None,
+            print(request.body)
+            try:
+                prod = Product.objects.get(id=int(request.POST.get('product')))
+            except:
+                prod = None
+            try:
+                stat = Status.object.get(id=request.POST.get('status'))
+            except:
+                stat = None
+            post_data = dict(product_id=prod,
                              count=int(request.POST.get('count')) or None,
                              date=datetime.strptime(request.POST.get('date'), '%Y-%m-%d') or None,
-                             status=Status.object.get(id=request.POST.get('status')) or None,
+                             status=stat,
                              note=request.POST.get('note') or None)
             values_for_update = {k: v for k, v in post_data.items() if v is not None}
 
@@ -60,6 +68,12 @@ def actual(request):
         return JsonResponse(res)
     else:
         return HttpResponseNotAllowed('<h2>Ошибка</h2>')
+
+
+
+
+def db_szi(request):
+    pass
 
 
 

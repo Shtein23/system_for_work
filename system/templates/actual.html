@@ -38,7 +38,7 @@
             <table id="table_actual_order" class="table">
                 <thead class="table-light">
                 <tr>
-                    <th><input type="checkbox"></th>
+                    <th><input type="checkbox" class="form-check-input"></th>
                     <th>Наименование</th>
                     <th>Количество</th>
                     <th>Желаемая дата готовности</th>
@@ -50,15 +50,15 @@
                 <tbody class="table-hover">
                 {% for order in orders %}
                 <tr id="{{ order.id }}">
-                    <td><input type="checkbox"></td>
+                    <td><input type="checkbox" class="form-check-input"></td>
                     <td>{{ order.product_id.name }}</td>
                     <td>{{ order.count }} шт.</td>
                     <td>{{ order.date|date:"d.m.Y" }}</td>
                     <td>{{ order.status.name }}</td>
                     <td>{{ order.note }}</td>
                     <td>
-                        <i class="fa-regular fa-pen-to-square"></i>
-                        <i class="fa-regular fa-trash-can"></i>
+                        <i class="fa-regular fa-pen-to-square" title="Редактировать"></i>
+                        <i class="fa-regular fa-trash-can" title="Удалить запись"></i>
                     </td>
                 </tr>
 
@@ -106,8 +106,8 @@
                                                             '<td>'+res.order.date+'</td>'+
                                                             '<td>'+res.order.status+'</td>'+
                                                             '<td>'+res.order.note+'</td>'+
-                                                            '<td><i class="fa-regular fa-pen-to-square"></i>'+
-                                                                '<i class="fa-regular fa-trash-can"></i></td>'+
+                                                            '<td><i class="fa-regular fa-pen-to-square" title="Редактировать"></i>'+
+                                                                '<i class="fa-regular fa-trash-can" title="Удалить запись"></i></td>'+
                                                             '</tr>')
                 } else {
                     console.log('error on server side');
@@ -147,36 +147,86 @@
         })
     });
 
-    $('#table_actual_order').on('click', '.fa-pen-to-square, .fa-floppy-disk', function(){
-        $(this).toggleClass('fa-pen-to-square')
-        $(this).toggleClass('fa-floppy-disk active')
+    $('#table_actual_order').on('click', '.fa-pen-to-square', function(){
+
         var id_row = $(this).parent().parent().attr('id')
 
-        if ($(this).hasClass('active')) {
-            $('table#table_actual_order tbody tr#'+id_row+' td:eq(1)').append('<br><br><select name="product" class="form-select mb-2">'+
+        $(this).toggleClass('fa-pen-to-square')
+        $(this).toggleClass('fa-circle-check active')
+        $(this).attr('title', 'Внести изменения')
+        $('table#table_actual_order tbody tr#'+id_row+' td:eq(1)').append('<br><br><select name="product" class="form-select mb-2">'+
+                                                                                '<option value="0" selected>Выбрать...</option>'+
                                                                                 '<option value="1">ЛГШ-501</option>'+
                                                                                 '<option value="2">ЛГШ-503</option>'+
                                                                                 '<option value="3">ЛГШ-513</option>'+
                                                                                 '</select>')
-            $('table#table_actual_order tbody tr#'+id_row+' td:eq(2)').append('<br><br><div class="input-group"><input type="number" name="count" class="form-control mb-2" min="1" max="1000" required="">'+
-                                                                                '<span class="input-group-text mb-2">шт.</span></div>')
-            $('table#table_actual_order tbody tr#'+id_row+' td:eq(3)').append('<br><br><input type="date" name="date" value="2022-04-20" class="form-control mb-2" required="">')
-            $('table#table_actual_order tbody tr#'+id_row+' td:eq(4)').append('<br><br><select name="status" class="form-select mb-2">'+
-                                                                                '<option value="1">Принят</option>'+
-                                                                                '<option value="2">В производстве</option>'+
-                                                                                '<option value="3">Выполнен</option>'+
-                                                                                '</select>')
-            $('table#table_actual_order tbody tr#'+id_row+' td:eq(5)').append('<br><br><input type="text" name="note" class="form-control mb-2">')
-            $('table#table_actual_order tbody tr#'+id_row+' td:eq(6)').prepend('<i class="fa-solid fa-ban"></i>')
+        $('table#table_actual_order tbody tr#'+id_row+' td:eq(2)').append('<br><br><div class="input-group"><input type="number" name="count" class="form-control mb-2" min="1" max="1000" required="">'+
+                                                                            '<span class="input-group-text mb-2">шт.</span></div>')
+        $('table#table_actual_order tbody tr#'+id_row+' td:eq(3)').append('<br><br><input type="date" name="date" class="form-control mb-2" required="">')
+        $('table#table_actual_order tbody tr#'+id_row+' td:eq(4)').append('<br><br><select name="status" class="form-select mb-2">'+
+                                                                            '<option value="0" selected>Выбрать...</option>'+
+                                                                            '<option value="1">Принят</option>'+
+                                                                            '<option value="2">В производстве</option>'+
+                                                                            '<option value="3">Выполнен</option>'+
+                                                                            '</select>')
+        $('table#table_actual_order tbody tr#'+id_row+' td:eq(5)').append('<br><br><input type="text" name="note" class="form-control mb-2 col">')
+        $('table#table_actual_order tbody tr#'+id_row+' td:eq(6) .fa-circle-check').after('<i class="fa-solid fa-ban" title="Отменить редактирование"></i>')
 
 
-
-        } else {
-            $('table#table_actual_order tbody tr#'+id_row).find('select').remove()
-            $('table#table_actual_order tbody tr#'+id_row).find('input').remove()
-            $('table#table_actual_order tbody tr#'+id_row).find('.input-group').remove()
-            $('table#table_actual_order tbody tr#'+id_row).find('br').remove()
-            $('table#table_actual_order tbody tr#'+id_row).find('.fa-ban').remove()
-        }
     });
+
+
+
+    $('#table_actual_order').on('click', '.fa-circle-check', function(){
+        var id_row = $(this).parent().parent().attr('id')
+        var data = 'action=edit&id='+id_row
+
+        if ($('#table_actual_order tr#'+id_row+' td:eq(1) select').val() != 0) {
+            data += '&product=' + $('#table_actual_order tr#'+id_row+' td:eq(1) select').val()
+        }
+        if ($('#table_actual_order tr#'+id_row+' td:eq(2) input').val() != '') {
+            data += '&count=' + $('#table_actual_order tr#'+id_row+' td:eq(2) input').val()
+        }
+        if ($('#table_actual_order tr#'+id_row+' td:eq(3) input').val() != '') {
+            data += '&date=' + $('#table_actual_order tr#'+id_row+' td:eq(3) input').val()
+        }
+        if ($('#table_actual_order tr#'+id_row+' td:eq(4) select').val() != 0) {
+            data += '&status=' + $('#table_actual_order tr#'+id_row+' td:eq(4) select').val()
+        }
+        if ($('#table_actual_order tr#'+id_row+' td:eq(5) input').val() != '') {
+            data += '&note=' + $('#table_actual_order tr#'+id_row+' td:eq(5) input').val()
+        }
+
+
+        console.log(id_row, data)
+
+        $.ajax({
+            url: '/actual',
+            type: 'POST',
+            data: csrf + data,
+            success: function(res) {
+                if (res.scs) {
+                    console.log('ok!');
+
+                } else {
+                    console.log('error on server side');
+                }
+            },
+            error: function(request,msg,error) {
+                error_msg(request,msg,error)
+            }
+        })
+
+    });
+
+    $('#table_actual_order').on('click', '.fa-ban, .fa-circle-check', function(){
+
+        $('.fa-circle-check').toggleClass('fa-pen-to-square')
+        $('.fa-circle-check').toggleClass('fa-circle-check active')
+        var id_row = $(this).parent().parent().attr('id')
+
+        $('table#table_actual_order tbody tr#'+id_row).find('select, input[type!="checkbox"], br, .input-group, .fa-ban').remove()
+    });
+
+
 {% endblock %}

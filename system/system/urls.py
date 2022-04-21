@@ -20,6 +20,8 @@ from system_db import views
 urlpatterns = [
     path('', views.index),
     path('actual', views.actual, name='actual'),
+    path('szi', views.actual, name='dbSzi'),
+    path('teplo', views.actual, name='dbTeplo'),
     path('admin/', admin.site.urls),
 
 ]

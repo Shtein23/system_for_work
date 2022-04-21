@@ -69,14 +69,21 @@ main i {
     font-size: 1.3em;
     margin-left: 0.2rem;
 }
-main i.active, i:hover {
-    color: #0d6efd;
+i:hover {
+    color: #0d6efd!important;
 }
 
-i  {
+i {
     font-size: 1.2em;
     cursor: pointer;
+}
 
+.fa-ban {
+    color: red;
+}
+
+main i.active {
+    color: green;
 }
 
 .table-light {

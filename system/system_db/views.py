@@ -24,11 +24,9 @@ def actual(request):
 
         if action == 'add' or action == 'edit':
 
-
             post_data = dict(product_id=Product.objects.get(id=int(request.POST.get('product'))) if request.POST.get('product') else None,
                              count=int(request.POST.get('count')) if request.POST.get('count') else None,
-                             date=datetime.strptime(request.POST.get('date'), '%Y-%m-%d') if request.POST.get('date')
-                             else None,
+                             date=datetime.strptime(request.POST.get('date'), '%Y-%m-%d') if request.POST.get('date') else None,
                              status=Status.object.get(id=request.POST.get('status')) if request.POST.get('status') else None,
                              note=request.POST.get('note') if request.POST.get('note') else None)
             values_for_update = {k: v for k, v in post_data.items() if v is not None}

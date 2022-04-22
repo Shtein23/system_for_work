@@ -69,13 +69,13 @@ main i {
     font-size: 1.3em;
     margin-left: 0.2rem;
 }
-i:hover {
+.action i:hover {
     color: #0d6efd!important;
+    cursor: pointer;
 }
 
 i {
     font-size: 1.2em;
-    cursor: pointer;
 }
 
 .fa-ban {

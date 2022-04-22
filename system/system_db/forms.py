@@ -7,9 +7,15 @@ class UserForm(forms.Form):
     age = forms.IntegerField(label='Возраст')
 
 
+def prod():
+    x = [(x.id, x.name) for x in Product.objects.all()]
+    x.insert(0, ('0', 'Выбрать...'))
+    return tuple(x)
+
+
 class AddOrder(forms.Form):
     product = forms.ChoiceField(label='Выберать изделие',
-                                choices=tuple((x.id, x.name) for x in Product.objects.all()),
+                                choices=prod(),
                                 widget=forms.Select(attrs={'class': 'form-select mb-2 js-chosen'}))
     count = forms.IntegerField(label='Количество',
                                min_value=1,
@@ -23,3 +29,5 @@ class AddOrder(forms.Form):
                            required=False,
                            widget=forms.TextInput(attrs={'class': 'form-control mb-2'}))
     status = forms.IntegerField(widget=forms.HiddenInput, initial=1)
+
+
